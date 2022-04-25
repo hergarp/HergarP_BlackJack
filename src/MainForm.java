@@ -1,6 +1,10 @@
 
+import java.io.File;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -47,6 +51,11 @@ public class MainForm extends javax.swing.JFrame {
         setIconImage(getIconImage());
         setIconImages(getIconImages());
         setLocation(getLocation());
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/res/Blackjack-singlehand.JPG"))); // NOI18N
         jLabel1.setText("jLabel1");
@@ -77,6 +86,11 @@ public class MainForm extends javax.swing.JFrame {
 
         jMenuItem4.setText("Kilépés");
         jMenuItem4.setToolTipText("");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem4);
 
         jMenuBar1.add(jMenu1);
@@ -143,6 +157,14 @@ public class MainForm extends javax.swing.JFrame {
            fileOpen();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+       kilep();
+    }//GEN-LAST:event_formWindowClosing
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        kilep();
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -197,6 +219,33 @@ public class MainForm extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void fileOpen() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        JFileChooser fileChooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("*.jpg, *.gif",new String[] { "jpg","gif" });
+                FileNameExtensionFilter filter1 = new FileNameExtensionFilter("*.txt", new String[] { "txt"});
+        fileChooser.setDialogTitle("Megnyitás");
+        fileChooser.addChoosableFileFilter(filter);
+        fileChooser.addChoosableFileFilter(filter1);
+        fileChooser.setFileFilter(filter1);
+fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+int result = fileChooser.showOpenDialog(this);
+if (result == JFileChooser.APPROVE_OPTION) {
+    File selectedFile = fileChooser.getSelectedFile();
+    System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+}
+//        @Override
+//        void approveSelection(){
+//            File f = getSelectedFile();
+//            if(!f.exists() ){                   
+//                JOptionPane.showMessageDialog(null, "Error");                   
+//            }
+//        }     
+    }
+
+    private void kilep() {
+             Icon icon = new ImageIcon(this.getClass().getResource("view/res/ikon.jpg"));
+        int gomb = JOptionPane.showConfirmDialog(rootPane, "Biztos kilép?", "KILÉPÉS", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+        if (gomb == JOptionPane.OK_OPTION) {
+            System.exit(0);
+        }
     }
 }
